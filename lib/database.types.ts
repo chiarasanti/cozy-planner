@@ -1,0 +1,57 @@
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+
+export interface Database {
+  public: {
+    Tables: {
+      projects: {
+        Row: {
+          id: string
+          name: string
+          due_date: string
+          total_hours: number
+          remaining_hours: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          due_date: string
+          total_hours: number
+          remaining_hours: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          due_date?: string
+          total_hours?: number
+          remaining_hours?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      user_preferences: {
+        Row: {
+          id: string
+          theme: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          theme?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          theme?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+    }
+  }
+}
