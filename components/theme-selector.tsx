@@ -23,14 +23,14 @@ export function ThemeSelector() {
 
   return (
     <div className="mt-12 p-4 rounded-lg text-center">
-      <p className="mb-4 text-lg font-medium font-mono">How are you feeling today?</p>
+      <p className="mb-2 text-lg font-medium font-mono">How are you feeling today?</p>
       <div className="flex justify-center gap-4">
         {themes.map((t) => (
           <button
             key={t.id}
             onClick={() => handleThemeChange(t.id)}
             className={cn(
-              "w-12 h-12 rounded-full transition-all",
+              "w-8 h-8 rounded-full transition-all",
               t.color,
               theme === t.id ? "ring-2 ring-offset-2 ring-black" : "hover:scale-110",
               isChanging && "opacity-50 cursor-not-allowed",

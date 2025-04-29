@@ -214,7 +214,7 @@ export default function Home() {
         </div>
 
         <div
-          className="transition-colors duration-300 w-[380px] min-h-[326px] px-[60px] py-20 mx-auto"
+          className="transition-colors duration-300 w-[380px] min-h-[326px] px-[60px] py-20 mx-auto mt-10"
           style={getContainerBgColor()}
         >
           {isWeekendToday ? (
