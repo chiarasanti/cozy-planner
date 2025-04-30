@@ -42,7 +42,8 @@ function useProjects() {
         // Filter out inactive projects
         const today = new Date();
         const activeProjects = formattedProjects.filter(
-          (project) => !isBefore(project.dueDate, today) || isToday(project.dueDate)
+          (project) =>
+            !isBefore(project.dueDate, today) || isToday(project.dueDate)
         );
 
         setProjects(activeProjects);
@@ -102,7 +103,10 @@ function useProjects() {
     }
   };
 
-  const updateProjectHours = async (projectId: string, remainingHours: number) => {
+  const updateProjectHours = async (
+    projectId: string,
+    remainingHours: number
+  ) => {
     try {
       const { error } = await supabase
         .from("projects")
@@ -118,7 +122,14 @@ function useProjects() {
     }
   };
 
-  return { projects, setProjects, isLoading, addProject, deleteProject, updateProjectHours };
+  return {
+    projects,
+    setProjects,
+    isLoading,
+    addProject,
+    deleteProject,
+    updateProjectHours,
+  };
 }
 
 function useTasks(projects: Project[], isLoading: boolean) {
@@ -145,8 +156,18 @@ function useTasks(projects: Project[], isLoading: boolean) {
 }
 
 export default function Home() {
-  const { projects, setProjects, isLoading, addProject, deleteProject, updateProjectHours } = useProjects();
-  const { todaysTasks, completedTasks, completeTask } = useTasks(projects, isLoading);
+  const {
+    projects,
+    setProjects,
+    isLoading,
+    addProject,
+    deleteProject,
+    updateProjectHours,
+  } = useProjects();
+  const { todaysTasks, completedTasks, completeTask } = useTasks(
+    projects,
+    isLoading
+  );
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isCompletionOpen, setIsCompletionOpen] = useState(false);
   const { getContainerBgColor, isLoading: isThemeLoading } = useTheme();
@@ -158,16 +179,24 @@ export default function Home() {
     try {
       const updatedProjects = projects.map((project) => {
         if (project.id === task.projectId) {
-          const newRemainingHours = Math.max(0, project.remainingHours - hoursWorked);
+          const newRemainingHours = Math.max(
+            0,
+            project.remainingHours - hoursWorked
+          );
           return { ...project, remainingHours: newRemainingHours };
         }
         return project;
       });
 
-      const updatedProject = updatedProjects.find((p) => p.id === task.projectId);
+      const updatedProject = updatedProjects.find(
+        (p) => p.id === task.projectId
+      );
       if (!updatedProject) return;
 
-      await updateProjectHours(updatedProject.id, updatedProject.remainingHours);
+      await updateProjectHours(
+        updatedProject.id,
+        updatedProject.remainingHours
+      );
       completeTask(task, hoursWorked);
       setProjects(updatedProjects);
       setIsCompletionOpen(false);
@@ -190,10 +219,10 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen transition-colors duration-300 font-mono">
+    <main className="min-h-screen transition-colors duration-300 font-mono w-full">
       <div className="container mx-auto p-4 w-full h-screen flex flex-col justify-between">
         <div className="flex w-full justify-between items-center mb-6">
-          <p className="font-mono">{format(new Date(), "EEEE, MMMM d")}</p>
+          <p className="font-mono">{format(new Date(), "EE, MMMM d")}</p>
           <Sheet>
             <SheetTrigger asChild>
               <Button className="font-mono text-base" variant={"link"}>
@@ -214,7 +243,7 @@ export default function Home() {
         </div>
 
         <div
-          className="transition-colors duration-300 w-[380px] min-h-[326px] px-[60px] py-20 mx-auto mt-10"
+          className="transition-colors duration-300 md:w-[380px] w-[310px] min-h-[326px] px-12 md:px-[60px] pt-[85px] md:pt-20 mx-auto mt-10"
           style={getContainerBgColor()}
         >
           {isWeekendToday ? (
@@ -236,7 +265,9 @@ export default function Home() {
                   ),
                 ];
                 return mergedTasks.map((task) => {
-                  const isCompleted = completedTasks.some((t) => t.id === task.id);
+                  const isCompleted = completedTasks.some(
+                    (t) => t.id === task.id
+                  );
                   return (
                     <li key={task.id} className="flex items-center">
                       <input
@@ -263,7 +294,9 @@ export default function Home() {
                         <div className="flex justify-between items-center">
                           <p
                             className={`font-mono ${
-                              isCompleted ? "line-through text-muted-foreground" : ""
+                              isCompleted
+                                ? "line-through text-muted-foreground"
+                                : ""
                             }`}
                           >
                             {task.projectName}
